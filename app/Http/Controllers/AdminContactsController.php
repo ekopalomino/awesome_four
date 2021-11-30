@@ -330,13 +330,20 @@
 
 	    }
 
-
+		public function getDetail($id) {
+			//Create an Auth
+			if(!CRUDBooster::isRead() && $this->global_privilege==FALSE || $this->button_edit==FALSE) {    
+				CRUDBooster::redirect(CRUDBooster::adminPath(),trans("crudbooster.denied_access"));
+			}
+			
+			$data = [];
+			$data['page_title'] = 'Detail Vendor Data';
+			$data['row'] = DB::table('contacts')->join('contact_details','contact_details.contact_id','contacts.id')->join('contact_documents','contact_documents.contact_id','contacts.id')->where('contacts.id',$id)->first();
+			dd($data);
+			return $this->view('apps.vendorDetail',$data);
+		}
 
 	    //By the way, you can still create your own method in here... :) 
-		public function ownEdit($id)
-		{
-					
-		}
 
 
 	}
